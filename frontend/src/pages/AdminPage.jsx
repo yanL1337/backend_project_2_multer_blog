@@ -12,7 +12,7 @@ const AdminPage = ({ setRefresh, blogs }) => {
     event.preventDefault();
     const form = new FormData(event.target);
 
-    fetch("http://localhost:1337/admin/addBlog", {
+    fetch(import.meta.env.VITE_BACKENDURL + "/admin/addBlog", {
       method: "POST",
       body: form,
     }).then((response) => {

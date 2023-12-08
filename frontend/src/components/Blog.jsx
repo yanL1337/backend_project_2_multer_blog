@@ -12,7 +12,7 @@ const Blog = ({ blog, setRefresh }) => {
   //admin/addBlog  PUT  formData
 
   const fetcher = (route, method, body) => {
-    fetch("http://localhost:1337/" + route, {
+    fetch(import.meta.env.VITE_BACKENDURL + "/" + route, {
       method: method,
       body: body,
       headers: {
