@@ -41,7 +41,7 @@ server.post("/admin/addBlog", upload.single("imglink"), (req, res) => {
       return path;
     })
     .then((data) => {
-      blog.imglink = "http://localhost:1337/" + data;
+      blog.imglink = `http://localhost:${PORT}/` + data;
       createBlog(blog);
       res.end();
     })
@@ -69,7 +69,7 @@ server.put("/admin/addBlog", upload.single("imglink"), (req, res) => {
           return path;
         })
         .then((data) => {
-          blog.imglink = "http://localhost:1337/" + data;
+          blog.imglink = `http://localhost:${PORT}/` + data;
           changeBlog(blog);
           delImg(blog.id);
         })
