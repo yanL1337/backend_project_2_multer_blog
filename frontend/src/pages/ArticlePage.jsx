@@ -7,11 +7,7 @@ const ArticlePage = ({ blogs }) => {
 
   return (
     <>
-      <img
-        className="w-full"
-        src={"http://localhost:1337/" + blog?.imglink}
-        alt=""
-      />
+      <img className="w-full" src={blog?.imglink} alt="" />
 
       <h1 className="text-8xl text-center bg-slate-500 text-white">
         {blog?.titel}

@@ -19,7 +19,10 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HomePage blogs={blogs} />} />
+        <Route
+          path="/"
+          element={<HomePage blogs={blogs} setRefresh={setRefresh} />}
+        />
         <Route
           path="/admin/addBlog"
           element={<AdminPage setRefresh={setRefresh} blogs={blogs} />}

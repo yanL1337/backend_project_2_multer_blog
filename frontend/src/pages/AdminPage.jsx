@@ -1,6 +1,13 @@
 import BlogList from "../components/BlogList";
 
 const AdminPage = ({ setRefresh, blogs }) => {
+  const load = (evt) => {
+    const [file] = evt.target.files;
+    if (file) {
+      document.querySelector("#preview").src = URL.createObjectURL(file);
+    }
+  };
+
   function senden(event) {
     event.preventDefault();
     const form = new FormData(event.target);
@@ -38,16 +45,17 @@ const AdminPage = ({ setRefresh, blogs }) => {
 
         <div>
           <label htmlFor="imglink">Blog Pic</label>
-          <input type="file" name="imglink" id="imglink" />
+          <input onChange={load} type="file" name="imglink" id="imglink" />
+          <img id="preview" src="#" alt="" />
         </div>
-        <div></div>
+
         <input
           className="border w-fit bg-black text-white"
           type="submit"
           value="Absenden"
         />
       </form>
-      <BlogList blogs={blogs} />
+      <BlogList setRefresh={setRefresh} blogs={blogs} />
     </>
   );
 };

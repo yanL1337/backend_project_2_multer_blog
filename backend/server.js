@@ -1,13 +1,22 @@
 import express from "express";
 import cors from "cors";
 import multer from "multer";
+import "dotenv/config.js";
 import fs from "fs/promises";
 import { fileTypeFromBuffer } from "file-type";
-import { getAllBlogs, createBlog, setup } from "./utils/storageHandler.js";
+import {
+  getAllBlogs,
+  createBlog,
+  setup,
+  getSingleBlog,
+  changeBlog,
+  delImg,
+  delBlog,
+} from "./utils/storageHandler.js";
 import { v4 } from "uuid";
 
 const server = express();
-const PORT = 1337;
+const PORT = process.env.PORT;
 const storage = multer.memoryStorage();
 const DIR = "./uploads/";
 const upload = multer({ storage });
@@ -32,23 +41,40 @@ server.post("/admin/addBlog", upload.single("imglink"), (req, res) => {
       return path;
     })
     .then((data) => {
-      blog.imglink = data;
+      blog.imglink = "http://localhost:1337/" + data;
       createBlog(blog);
       res.end();
     })
     .catch((err) => res.status(500).end(err));
 });
 
-server.delete("/", (req, res) => {
-  const todo = req.body;
-  deleteTodo(todo.id);
+server.delete("/admin/addBlog", upload.none(), (req, res) => {
+  const blog = req.body;
+  console.log(req.body);
+  delBlog(blog.id);
   res.end();
 });
 
-server.put("/", (req, res) => {
-  const todo = req.body;
-  changeStatus(todo.id);
+server.get("/single", (req, res) => {
+  getSingleBlog(req.body.id).then((data) => res.json(data).end());
+});
 
+server.put("/admin/addBlog", upload.single("imglink"), (req, res) => {
+  const blog = req.body;
+  req.file
+    ? fileTypeFromBuffer(req.file.buffer)
+        .then((data) => {
+          const path = DIR + v4() + "." + data.ext;
+          fs.writeFile(path, req.file.buffer);
+          return path;
+        })
+        .then((data) => {
+          blog.imglink = "http://localhost:1337/" + data;
+          changeBlog(blog);
+          delImg(blog.id);
+        })
+        .catch((err) => res.status(500).end(err))
+    : changeBlog(blog);
   res.end();
 });
 
