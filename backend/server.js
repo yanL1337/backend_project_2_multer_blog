@@ -17,6 +17,7 @@ import { v4 } from "uuid";
 
 const server = express();
 const PORT = process.env.PORT;
+const URL = process.env.URL;
 const storage = multer.memoryStorage();
 const DIR = "./uploads/";
 const upload = multer({ storage });
@@ -41,7 +42,7 @@ server.post("/admin/addBlog", upload.single("imglink"), (req, res) => {
       return path;
     })
     .then((data) => {
-      blog.imglink = `http://localhost:${PORT}/` + data;
+      blog.imglink = `${URL}:${PORT}/` + data;
       createBlog(blog);
       res.end();
     })
@@ -69,7 +70,7 @@ server.put("/admin/addBlog", upload.single("imglink"), (req, res) => {
           return path;
         })
         .then((data) => {
-          blog.imglink = `http://localhost:${PORT}/` + data;
+          blog.imglink = `${URL}:${PORT}/` + data;
           changeBlog(blog);
           delImg(blog.id);
         })
